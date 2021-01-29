@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const UserController = require('../controllers/user.controller');
 const { auth } = require('../middlewares/auth.middleware');
+const CartController = require('../controllers/cart.controller');
 
-/*  URL: api/users/ */
-router.get('/dashboard', auth, UserController.dashboard);
+/*  URL: api/carts/ */
+router.post('/', auth, CartController.addToCart);
+
 
 
 

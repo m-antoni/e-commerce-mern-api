@@ -31,8 +31,10 @@ app.options('*', cors());
 // Define Routes
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/users', require('./routes/users.route'));
+app.use('/api/carts', require('./routes/cart.route'));
 
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+
