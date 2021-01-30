@@ -34,8 +34,14 @@ app.options('*', cors());
 app.get('/', (req, res) => {
 
     const data = {
-        name: 'E-Commerce api (MERN Stack)',
-        details: { node: process.version, platform: `${os.type()}, ${os.platform()}`, cpu: os.cpus().length, memory: Math.round( os.totalmem() / 1024 / 1024 ) }
+        app: 'E-Commerce api (MERN Stack)',
+        created_by: 'Michael Antoni',
+        details: { 
+            node: process.version, 
+            platform: `${os.type()}, ${os.platform()}`, 
+            cpu: os.cpus().length, 
+            memory: Math.round( os.totalmem() / 1024 / 1024 ) 
+        }
     };
 
     res.json(data);
