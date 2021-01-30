@@ -6,23 +6,19 @@ const shippingSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    dispatch: [
+    details: [
         {
             address: {
-                type: String,
-                required: true
+                type: String
             },
             zipcode: {
-                type: String,
-                required: true
+                type: String
             },
             contact: {
-                type: 'String',
-                required: true
+                type: 'String'
             },
-            status: {
-                type: String,
-                required: true
+            is_default: {
+                type: Boolean
             }
             
         }
