@@ -14,7 +14,7 @@ const auth = (req, res, next) => {
         
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        req.authID = decoded.id;
+        req.authID = decoded._id;
         next();
         
     } catch (err) {

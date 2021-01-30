@@ -9,7 +9,7 @@ const CartSchema = new Schema({
     products: [
         {
             product_id: String,
-            quantity: Number
+            qty: Number
         }
     ],
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
