@@ -1,11 +1,12 @@
 {
   "name": "e-commerce-mern",
   "version": "1.0.0",
-  "description": "Node JS boiler-plate api",
+  "description": "e-commerce build using mern stack",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon app"
+    "dev": "nodemon app",
+    "start": "node app"
   },
   "keywords": [],
   "author": "Michael Antoni",
