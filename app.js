@@ -32,6 +32,7 @@ app.options('*', cors());
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/users', require('./routes/users.route'));
 app.use('/api/carts', require('./routes/cart.route'));
+app.use('/api/shipping', require('./routes/shipping.route'));
 
 
 const PORT = process.env.PORT || 5000;
