@@ -30,7 +30,7 @@ const register = async (req, res) => {
         await user.save();
         const token = await user.generateAuthToken();
 
-        res.json({ token, redirect: '/dashboard' });
+        res.json({ token, redirect: '/home' });
 
     } catch (err) {
         console.log(err)
@@ -68,7 +68,7 @@ const login = async (req, res) => {
 
         const token = await user.generateAuthToken();
 
-        res.json({ token, redirect: '/dashboard' });
+        res.json({ token, redirect: '/home' });
 
     } catch (err) {
         console.log(err)
