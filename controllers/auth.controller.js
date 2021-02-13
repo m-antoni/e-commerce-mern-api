@@ -1,9 +1,8 @@
 const User = require('../models/User');
 const { userSchema, authSchema } = require('../helpers/validation.helper');
 
-
 /* 
-    @route   POST api/auth/verify
+    @route   GET api/auth/verify
     @desc    Verify A User's Token if valid or expired
     @access  public 
 */
@@ -12,12 +11,12 @@ const authVerify = async (req, res) => {
     // This means token verify is success
     const data = {
         user: req.user,
-        id: req.authID
+        id: req.authID,
+        token: req.token
     }
     
     res.json(data);
 }
-
 
 /* 
     @route   POST api/auth/register

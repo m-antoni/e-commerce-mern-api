@@ -10,5 +10,4 @@ router.post('/register', AuthController.register);
 // Verify User's Token
 router.get('/verify', auth, AuthController.authVerify);
 
-
 module.exports = router;
