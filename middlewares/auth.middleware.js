@@ -15,11 +15,13 @@ const auth = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         req.authID = decoded._id;
+        req.user = decoded.user;
         next();
         
     } catch (err) {
-        return res.status(401).json({ message: 'Token is Invalid.' });
+        return res.status(401).json({ message: 'UnAuthorized Acccess' });
     }
 }
+
 
 module.exports = { auth };

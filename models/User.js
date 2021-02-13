@@ -39,7 +39,13 @@ userSchema.methods.generateAuthToken = async function() {
         expiresIn: parseInt(process.env.JWT_EXPIRES_IN)
     }); 
 
-    return token;
+    const data = {
+        user: user.name,
+        id: user._id,
+        token: token
+    }
+
+    return data;
 }
 
 // static function for login user
