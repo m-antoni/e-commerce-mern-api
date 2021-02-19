@@ -6,14 +6,9 @@ const CartSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    products: [
-        {
-            product_id: String,
-            qty: Number
-        }
-    ],
+    cart: Number,
+    cart_items: []
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }});
-
 
 
 const Cart = mongoose.model('Cart', CartSchema); 

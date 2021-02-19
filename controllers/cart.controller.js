@@ -14,7 +14,7 @@ const userCart = async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(500).send('Server Error.');
+        res.status(500).json({ errors: 'Cart Items not found.'});
     }
     
 }
@@ -66,6 +66,49 @@ const addToCart = async (req, res) => {
         res.status(500).send('Server Error.');
     }
 
+}
+
+
+/* 
+    @route   POST api/carts/store
+    @desc    Store Cart data 
+    @access  private 
+*/
+const storeCart = async (req, res) => {
+
+    const { cart, cart_items } = req.body;
+
+    try {
+        
+        let checkCart = await Cart.findOne({ user_id: req.authID });
+        
+        // check if user has cart data
+        if(checkCart){
+            
+           // update cart
+           checkCart.cart = cart;
+           checkCart.cart_items = cart_items;
+           await checkCart.save();
+        
+        }else{
+
+            // Create new cart
+            let formParams = {
+                user_id: req.authID,
+                cart,
+                cart_items
+            }
+
+            let newCart = new Cart(formParams);
+            await newCart.save();
+        }
+
+        res.json(cart);
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ errors: 'Server Error.' });
+    }
 }
 
 
@@ -132,4 +175,4 @@ const removeFromCart = async (req, res) => {
 
 
 
-module.exports = { userCart, addToCart, updateCart, removeFromCart }; 
+module.exports = { userCart, addToCart, updateCart, removeFromCart, storeCart }; 
