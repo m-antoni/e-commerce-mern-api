@@ -17,7 +17,6 @@ const shippingSchema = new Schema({
             is_default: {
                 type: Boolean
             }
-            
         }
     ]
 }, { timestamps: {  createdAt: 'created_at', updatedAt: 'updated_at' } });

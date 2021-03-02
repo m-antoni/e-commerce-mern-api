@@ -10,9 +10,9 @@ const userShipping = async (req, res) => {
 
     try {
         
-        const ship = await Shipping.findOne({ user_id: req.authID }).select('-user_id');
+        let shipping = await Shipping.findOne({ user_id: req.authID }).select('-user_id');
 
-        res.json(ship);
+        res.json({ shipping });
 
     } catch (err) {
         console.log(err);
