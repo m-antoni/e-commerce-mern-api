@@ -11,9 +11,6 @@ const shippingSchema = new Schema({
             address: {
                 type: String
             },
-            zipcode: {
-                type: String
-            },
             contact: {
                 type: 'String'
             },

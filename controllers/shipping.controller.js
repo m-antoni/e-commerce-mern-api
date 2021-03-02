@@ -1,6 +1,4 @@
-const { remove } = require('../models/Shipping');
 const Shipping = require('../models/Shipping');
-
 
 
 /* 
@@ -30,7 +28,7 @@ const userShipping = async (req, res) => {
 */
 const addShipping = async (req, res) => {
     
-    const { address, zipcode, contact } = req.body;
+    const { address, contact } = req.body;
     const authID = req.authID;
     
     try {
@@ -41,7 +39,6 @@ const addShipping = async (req, res) => {
 
             const addNew = {
                 address,
-                zipcode,
                 contact,
                 is_default: false
             };
@@ -56,7 +53,6 @@ const addShipping = async (req, res) => {
                 user_id: authID,
                 details: [{
                     address,
-                    zipcode,
                     contact,
                     is_default: true
                 }]
@@ -84,7 +80,7 @@ const addShipping = async (req, res) => {
 */
 const updateShipping = async (req, res) => {
 
-    const { address, zipcode, contact } = req.body;
+    const { address, contact } = req.body;
     const detail_id = req.params.detail_id;
     const authID = req.authID;
 
@@ -97,10 +93,6 @@ const updateShipping = async (req, res) => {
             {
                 if(address){
                     detail.address = address;
-                }
-
-                if(zipcode){
-                    detail.zipcode = zipcode;
                 }
 
                 if(contact){
@@ -174,7 +166,6 @@ const updateDefault = async (req, res) => {
         })
 
         await ship.save();
-        
         res.json(ship);
 
     } catch (err) {
