@@ -28,7 +28,7 @@ const userShipping = async (req, res) => {
 */
 const addShipping = async (req, res) => {
     
-    const { address, contact } = req.body;
+    const { forms } = req.body;
     const authID = req.authID;
     
     try {
@@ -37,13 +37,7 @@ const addShipping = async (req, res) => {
 
         if(ship){
 
-            const addNew = {
-                address,
-                contact,
-                is_default: false
-            };
-
-            ship.details.push(addNew);
+            forms.map((form, i) => ship.details.push(forms[i]));
             await ship.save();
 
         }else{
@@ -51,11 +45,7 @@ const addShipping = async (req, res) => {
             // Insert new shipping details
             const insertData = {
                 user_id: authID,
-                details: [{
-                    address,
-                    contact,
-                    is_default: true
-                }]
+                details: forms
             }
     
             ship = new Shipping(insertData);
@@ -63,7 +53,6 @@ const addShipping = async (req, res) => {
         }
     
         res.json(ship); 
-
 
     } catch (err) {
         console.log(err);

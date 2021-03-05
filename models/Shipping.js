@@ -12,7 +12,7 @@ const shippingSchema = new Schema({
                 type: String
             },
             contact: {
-                type: 'String'
+                type: String
             },
             is_default: {
                 type: Boolean
