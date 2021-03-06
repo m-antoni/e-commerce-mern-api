@@ -36,13 +36,19 @@ const addShipping = async (req, res) => {
         let ship = await Shipping.findOne({ user_id: authID });
 
         if(ship){
+            
+            forms.map((form, i) => {
+                let formData = { ...form, is_default: ship.details.length === 0 ? true : false };
+                ship.details.push(formData);
+            });
 
-            forms.map((form, i) => ship.details.push(forms[i]));
             await ship.save();
 
         }else{
             
             // Insert new shipping details
+            forms[0]['is_default'] = true;
+
             const insertData = {
                 user_id: authID,
                 details: forms
@@ -51,7 +57,7 @@ const addShipping = async (req, res) => {
             ship = new Shipping(insertData);
             await ship.save();
         }
-    
+        
         res.json(ship); 
 
     } catch (err) {
