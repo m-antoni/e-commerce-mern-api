@@ -11,5 +11,4 @@ router.put('/:detail_id', auth, ShippingController.updateShipping);
 router.delete('/:detail_id', auth, ShippingController.removeDetail);
 router.put('/default/:detail_id', auth, ShippingController.updateDefault);
 
-
 module.exports = router;

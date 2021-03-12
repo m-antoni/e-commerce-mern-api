@@ -7,5 +7,4 @@ const { auth } = require('../middlewares/auth.middleware');
 router.get('/dashboard', auth, UserController.dashboard);
 
 
-
 module.exports = router;

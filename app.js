@@ -6,7 +6,6 @@ const mongoSanitize = require('express-mongo-sanitize');
 const connectDB = require('./config/db');
 const os = require('os');
 
-
 const app = express();
 
 // Conenct Database
@@ -30,9 +29,8 @@ app.use(cors());
 app.options('*', cors());
 
 
-// Define Routes
+// api base route
 app.get('/', (req, res) => {
-
     const data = {
         app: 'E-Commerce api (MERN Stack)',
         created_by: 'Michael Antoni',
@@ -47,12 +45,12 @@ app.get('/', (req, res) => {
     res.json(data);
 })
 
-
+// api routes
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/users', require('./routes/users.route'));
 app.use('/api/carts', require('./routes/cart.route'));
 app.use('/api/shipping', require('./routes/shipping.route'));
-
+app.use('/api/transaction', require('./routes/transaction.route'));
 
 
 const PORT = process.env.PORT || 5000;
