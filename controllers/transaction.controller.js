@@ -48,14 +48,14 @@ const singleTransaction = async (req, res) => {
 */
 const addTransaction = async (req, res) => {
 
-    const { transaction_id, payment_type, shipping_details, items, amount } = req.body;
+    const { transaction_code, payment_type, shipping_details, items, amount } = req.body;
     const authID = req.authID;
     
     try {
         
         const insertData = {
             user_id: authID,
-            transaction_id,
+            transaction_code,
             payment_type,
             shipping_details,
             items,
@@ -64,6 +64,8 @@ const addTransaction = async (req, res) => {
 
         const transaction = new Transaction(insertData);
         await  transaction.save();
+
+        res.json({ transaction, message: 'transaction success' });
 
     } catch (err) {
         console.log(err);
@@ -77,7 +79,7 @@ const addTransaction = async (req, res) => {
     @desc    DELETE Transaction
     @access  private 
 */
-const deleteTransaction = async (req, res) => {
+const removeTransaction = async (req, res) => {
 
     try {
         
@@ -91,4 +93,4 @@ const deleteTransaction = async (req, res) => {
 }
 
 
-module.exports = { getTransaction, addTransaction, singleTransaction, deleteTransaction };
+module.exports = { getTransaction, addTransaction, singleTransaction, removeTransaction };

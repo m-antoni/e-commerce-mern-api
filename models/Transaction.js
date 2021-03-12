@@ -6,7 +6,7 @@ const transactionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    transaction_id:{
+    transaction_code:{
         type: String,
         required: true
     }, 
@@ -24,7 +24,7 @@ const transactionSchema = new Schema({
     },
     items: [],
     amount: {
-        type: String,
+        type: Number,
         required: true 
     }
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
