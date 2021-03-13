@@ -9,7 +9,7 @@ const getTransaction = async (req, res) => {
     
     try {
         
-        const transactions = await Transaction.findOne({ user_id: req.authID }).select('-user_id');
+        const transactions = await Transaction.find({ user_id: req.authID }).select('-user_id');
 
         res.json({transactions});
 
