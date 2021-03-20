@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const FakeStore = require('../models/FakeStore');
 const { userSchema, authSchema } = require('../helpers/validation.helper');
-const fakestoredata = require('../models/fakestore.json');
+
 /* 
     @route   GET api/auth/verify
     @desc    Verify A User's Token if valid or expired
@@ -9,13 +9,11 @@ const fakestoredata = require('../models/fakestore.json');
 */
 const authVerify = async (req, res) => {
     
-    const fakestore = await setFakeStoreAPI();
     // This means token verify is success
     const data = {
         user: req.user,
         id: req.authID,
         token: req.token,
-        fakestore
     }
 
     res.json(data);
@@ -50,9 +48,8 @@ const register = async (req, res) => {
         await user.save();
 
         const data = await user.generateAuthToken();
-        const fakestore = await setFakeStoreAPI();
 
-        res.json({  user: data.user, id: data.id, token: data.token, fakestore, redirect: '/home'});
+        res.json({  user: data.user, id: data.id, token: data.token, redirect: '/home'});
 
     } catch (err) {
         console.log(err)
@@ -88,44 +85,13 @@ const login = async (req, res) => {
         }
 
         const data = await user.generateAuthToken();
-        const fakestore = await setFakeStoreAPI();
             
-        res.json({ user: data.user, id: data.id, token: data.token, fakestore, redirect: '/home'});
+        res.json({ user: data.user, id: data.id, token: data.token, redirect: '/home'});
 
     } catch (err) {
         console.log(err)
         res.status(500).json({ errors: 'Server Error'});
     }  
 }
-
-
-
-const setFakeStoreAPI = async () => {
-
-    let data = null;
-
-    try {
-        
-        const res = await FakeStore.find();
-
-        if(res.length > 0){
-            data = res;
-        }else{
-            const fakestore_arr = fakestoredata.map(api => {
-                api['search'] = api.title.toLowerCase();
-                return api
-            });
-
-            await FakeStore.insertMany(fakestore_arr);
-            data = fakestore_arr;
-        }
-
-    } catch (err) {
-        console.log(err)
-    }
-
-    return data;
-}
-
 
 module.exports =  { register, login, authVerify };

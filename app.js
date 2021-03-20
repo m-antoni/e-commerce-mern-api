@@ -5,7 +5,6 @@ const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const connectDB = require('./config/db');
 const os = require('os');
-
 const app = express();
 
 // Conenct Database
@@ -45,9 +44,10 @@ app.get('/', (req, res) => {
     res.json(data);
 })
 
+
 // api routes
+app.use('/api/fakestore', require('./routes/fakestore.route'));
 app.use('/api/auth', require('./routes/auth.route'));
-app.use('/api/users', require('./routes/users.route'));
 app.use('/api/carts', require('./routes/cart.route'));
 app.use('/api/shipping', require('./routes/shipping.route'));
 app.use('/api/transaction', require('./routes/transaction.route'));
