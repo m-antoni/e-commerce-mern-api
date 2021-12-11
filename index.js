@@ -51,7 +51,7 @@ app.get('/', (req, res) => {
 
 
 // api routes
-app.use('/api/fakestore', require('./routes/fakestore.route'));
+// app.use('/api/fakestore', require('./routes/fakestore.route'));
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/carts', require('./routes/cart.route'));
 app.use('/api/shipping', require('./routes/shipping.route'));
