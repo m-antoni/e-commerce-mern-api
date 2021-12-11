@@ -32,7 +32,6 @@ app.use(cors());
 //     next();
 // });
 
-
 // api base route
 app.get('/', (req, res) => {
     const data = {
