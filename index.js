@@ -24,9 +24,10 @@ app.use(xss());
 app.use(mongoSanitize());
 
 // enable cors
-app.use(cors());
+app.use(cors({
+    origin: 'https://michael-ecom-mern-frontend.vercel.app/'
+}));
 app.options('*', cors());
-
 
 // api base route
 app.get('/', (req, res) => {
