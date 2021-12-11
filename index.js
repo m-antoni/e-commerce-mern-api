@@ -1,7 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const xss = require('xss-clean');
-const cors = require('cors');
+// const cors = require('cors');
 const mongoSanitize = require('express-mongo-sanitize');
 const connectDB = require('./config/db');
 const os = require('os');
@@ -24,8 +24,14 @@ app.use(xss());
 app.use(mongoSanitize());
 
 // enable cors
-app.use(cors());
-app.options('*', cors());
+// app.use(cors());
+// app.options('*', cors());
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 
 // api base route
 app.get('/', (req, res) => {
