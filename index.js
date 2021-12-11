@@ -24,9 +24,7 @@ app.use(xss());
 app.use(mongoSanitize());
 
 // enable cors
-app.use(cors({
-    origin: 'https://michael-ecom-mern-frontend.vercel.app/'
-}));
+app.use(cors());
 app.options('*', cors());
 
 // api base route
@@ -47,7 +45,7 @@ app.get('/', (req, res) => {
 
 
 // api routes
-app.use('/api/fakestore', require('./routes/fakestore.route'));
+app.use('/api/fakestore', cors(), require('./routes/fakestore.route'));
 app.use('/api/auth', require('./routes/auth.route'));
 app.use('/api/carts', require('./routes/cart.route'));
 app.use('/api/shipping', require('./routes/shipping.route'));
