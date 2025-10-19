@@ -30,20 +30,40 @@ app.use(xss());
 app.use(mongoSanitize());
 
 // ===== CORS (universal) =====
-const allowedOrigins = ["http://localhost:3000", "http://127.0.0.1:3000"];
+const cors = require("cors");
+
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  /\.vercel\.app$/, // ✅ allow any Vercel subdomain
+  /\.onrender\.com$/, // ✅ (optional) allow your Render domain too
+];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps, curl, etc.)
+      if (!origin) return callback(null, true);
+
+      const isAllowed = allowedOrigins.some((pattern) =>
+        pattern instanceof RegExp ? pattern.test(origin) : pattern === origin
+      );
+
+      if (!isAllowed) {
+        console.warn(`🚫 Blocked by CORS: ${origin}`);
+        return callback(new Error("Not allowed by CORS"), false);
+      }
+
+      return callback(null, true);
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "x-auth-token"],
-    preflightContinue: false,
-    optionsSuccessStatus: 204, // for legacy browsers
+    optionsSuccessStatus: 204,
   })
 );
 
-// ✅ This must be BEFORE any routes or auth
+// Must be before routes
 app.options("*", cors());
 
 // ====================================
