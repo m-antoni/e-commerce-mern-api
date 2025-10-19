@@ -6,6 +6,7 @@ const xss = require("xss-clean");
 const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 const connectDB = require("./config/db");
+const morgan = require("morgan");
 const os = require("os");
 const app = express();
 
@@ -30,8 +31,6 @@ app.use(xss());
 app.use(mongoSanitize());
 
 // ===== CORS (universal) =====
-const cors = require("cors");
-
 const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
@@ -82,6 +81,16 @@ app.get("/", (req, res) => {
     },
   };
   res.json(data);
+});
+
+// ====================================
+// 🤖 API Routes
+// ===================================
+app.use((req, res, next) => {
+  const now = new Date().toISOString();
+  const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
+  console.log(`🤖[${now}] ${req.method} ${fullUrl}`);
+  next();
 });
 
 // ====================================
