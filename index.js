@@ -29,12 +29,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(xss());
 app.use(mongoSanitize());
 
-
 // ===== CORS (universal) =====
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-];
+const allowedOrigins = ["http://localhost:3000", "http://127.0.0.1:3000"];
 
 app.use(
   cors({
@@ -49,7 +45,6 @@ app.use(
 
 // ✅ This must be BEFORE any routes or auth
 app.options("*", cors());
-
 
 // ====================================
 // 🧭 Root Route
@@ -96,12 +91,12 @@ app.use((err, req, res, next) => {
 // ====================================
 
 const PORT = process.env.PORT || 5000;
-const appURL = `http://localhost:${PORT}`;
+const appURL = `${process.env.APP_URL}:${PORT}`;
 
 app.listen(PORT, () => {
   console.log("===================================");
   console.log(`🚀 Server is running successfully!`);
-  console.log(`🌐 URL: ${appURL}`);
+  console.log(`🌐 API URL: ${appURL}`);
   console.log(`📦 Environment: ${process.env.NODE_ENV || "development"}`);
   console.log(`👨‍💻 Created by: Michael B. Antoni`);
   console.log("===================================");
