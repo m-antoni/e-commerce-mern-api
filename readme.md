@@ -27,7 +27,6 @@ This project includes a secure backend API and frontend interface where users ca
 | **Authentication** | JWT (JSON Web Token)             |
 | **Payments**       | PayPal Sandbox                   |
 | **Deployment**     | Render, Vercel                  |
-| **Utilities**      | Morgan, Helmet, CORS, dotenv     |
 
 ## Setup Instructions
 

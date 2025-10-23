@@ -6,9 +6,10 @@ const xss = require("xss-clean");
 const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
 const connectDB = require("./config/db");
-const morgan = require("morgan");
 const os = require("os");
+const statusCodeColor = require("./helpers/statusCodeColor");
 const app = express();
+
 
 // ====================================
 // 🧩 Connect to MongoDB
@@ -84,12 +85,18 @@ app.get("/", (req, res) => {
 });
 
 // ====================================
-// 🤖 API Routes
+// 🤖 API Routes Terminal Logger
 // ===================================
 app.use((req, res, next) => {
   const now = new Date().toISOString();
   const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
-  console.log(`🤖[${now}] ${req.method} ${fullUrl}`);
+
+  // after the response is finished
+  res.on('finish',() => {
+    const statusCode = statusCodeColor(res.statusCode)
+    console.log(`🛢️ ${now.yellow} ${req.method} ${req.originalUrl} ${statusCode}`);
+  });
+
   next();
 });
 
