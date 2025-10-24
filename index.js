@@ -8,6 +8,8 @@ const mongoSanitize = require("express-mongo-sanitize");
 const connectDB = require("./config/db");
 const os = require("os");
 const statusCodeColor = require("./helpers/statusCodeColor");
+const getMilliSeconds = require("./helpers/getMilliSeconds");
+const getMemory = require("./helpers/getMemory");
 const app = express();
 
 
@@ -72,16 +74,71 @@ app.options("*", cors());
 
 app.get("/", (req, res) => {
   const data = {
-    app: "E-Commerce API (MERN Stack)",
-    created_by: "Michael Antoni",
+    app: "eshop - Simple E-commerce API (MERN Stack) + redux, tailwindcss and more.",
+    description: "Backend API handles Authentication, products, shipping, transaction and more.",
+    environment: process.env.NODE_ENV || "development",
     details: {
-      node: process.version,
-      platform: `${os.type()}, ${os.platform()}`,
-      cpu: os.cpus().length,
-      memory: Math.round(os.totalmem() / 1024 / 1024),
+      node_version: process.version,
+      platform: `${os.type()} ${os.platform()}`,
+      hostname: os.hostname(),
+      cpu: `${os.cpus().length} cores`,
+      memory: {
+        free: getMemory().free,
+        total: getMemory().total,
+      },
     },
+    links: {
+      linkedin: "https://www.linkedin.com/in/m-antoni",
+      github: "https://github.com/m-antoni/e-commerce-mern-api",
+      frontend: "https://m-antoni-eshop-mern.vercel.app",
+    },
+    hosted: {
+      database: "https://mongodb.com",
+      backend_api:"https://render.com",
+      frontend_ui:"https://vercel.com",
+      demo: "https://www.youtube.com/watch?v=ojTaXwCmRC0&t=13s"
+    }
   };
-  res.json(data);
+
+  const html = `
+    <html>
+      <head>
+        <title>API eshop</title>
+        <style>
+          body { font-family: Arial; background: #111; color: #eee; padding: 40px; }
+          table { border-collapse: collapse; width: 60%; margin: 20px 0; }
+          th, td { border: 1px solid #555; padding: 10px; text-align: left; }
+          th { background: #222; }
+          tr:nth-child(even) { background: #1a1a1a; }
+          a { color: #4cc3ff; text-decoration: none; }
+          a:hover { text-decoration: underline; color: #80dfff; }
+        </style>
+      </head>
+      <body>
+        <h2>🚀 E-Commerce API (MERN Stack)</h2>
+        <p>Created by <b>Michael Antoni</b></p>
+        <table>
+          <tr><th>Title</th><th>Description</th></tr>
+          <tr><td>App</td><td>${data.app}</td></tr>
+          <tr><td>Description</td><td>${data.description}</td></tr>
+          <tr><td>Environment</td><td>${data.environment}</td></tr>
+          <tr><td>Node Version</td><td>${data.details.node_version}</td></tr>
+          <tr><td>Platform</td><td>${data.details.platform}</td></tr>
+          <tr><td>CPU</td><td>${data.details.cpu}</td></tr>
+          <tr><td>Memory</td><td>Free = ${data.details.memory.free}  Total = ${data.details.memory.total}</td></tr>
+          <tr><td>Database</td><td>MongoDB Atlas Cloud: <a href="${data.hosted.database}" target="_blank">${data.hosted.database}</a></tr>
+          <tr><td>Backend API</td><td>Hosted on: <a href="${data.hosted.backend_api}" target="_blank">${data.hosted.backend_api}</a></tr>
+          <tr><td>Frontend UI</td><td>Hosted on: <a href="${data.hosted.frontend_ui}" target="_blank">${data.hosted.frontend_ui}</a></tr>
+          <tr><td>Linked In</td><td><a href="${data.links.linkedin}" target="_blank">${data.links.linkedin}</a></tr>
+          <tr><td>Github</td><td><a href="${data.links.github}" target="_blank">${data.links.github}</a></tr>
+          <tr><td>Visit Here</td><td><a href="${data.links.frontend}" target="_blank">${data.links.frontend}</a></tr>
+          <tr><td>Live Demo</td><td><a href="${data.hosted.demo}" target="_blank">${data.hosted.demo}</a></tr>
+        </table>
+      </body>
+    </html>
+  `;
+
+  res.send(html);
 });
 
 // ====================================
@@ -89,12 +146,15 @@ app.get("/", (req, res) => {
 // ===================================
 app.use((req, res, next) => {
   const now = new Date().toISOString();
-  const fullUrl = `${req.protocol}://${req.get("host")}${req.originalUrl}`;
+  const startTime = Date.now();
 
-  // after the response is finished
+  // do this after the response is finished
   res.on('finish',() => {
     const statusCode = statusCodeColor(res.statusCode)
-    console.log(`🛢️ ${now.yellow} ${req.method} ${req.originalUrl} ${statusCode}`);
+    const countMilliSeconds = getMilliSeconds(startTime)
+
+    // display custom logger in terminal
+    console.log(`🛢️ ${now.yellow} ${req.method} ${req.originalUrl} ${statusCode} ${countMilliSeconds}ms`);
   });
 
   next();
