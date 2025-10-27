@@ -16,6 +16,7 @@ const statusCodeColor = function (statusCode) {
         break;
       case 400:
       case 401:
+      case 404:
         statusWithColor = '⚠️ ' + statusCode.toString().yellow  
         break;
       case 500:

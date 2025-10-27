@@ -96,7 +96,7 @@ app.get("/", (req, res) => {
       database: "https://mongodb.com",
       backend_api:"https://render.com",
       frontend_ui:"https://vercel.com",
-      demo: "https://www.youtube.com/watch?v=ojTaXwCmRC0&t=13s"
+      demo:"https://youtu.be/kP-tBwVRxI8"
     }
   };
 
@@ -132,7 +132,7 @@ app.get("/", (req, res) => {
           <tr><td>Linked In</td><td><a href="${data.links.linkedin}" target="_blank">${data.links.linkedin}</a></tr>
           <tr><td>Github</td><td><a href="${data.links.github}" target="_blank">${data.links.github}</a></tr>
           <tr><td>Visit Here</td><td><a href="${data.links.frontend}" target="_blank">${data.links.frontend}</a></tr>
-          <tr><td>Live Demo</td><td><a href="${data.hosted.demo}" target="_blank">${data.hosted.demo}</a></tr>
+          <tr><td>Demo Video</td><td><a href="${data.hosted.demo}" target="_blank">${data.hosted.demo}</a></tr>
         </table>
       </body>
     </html>
