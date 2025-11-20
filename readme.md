@@ -3,7 +3,7 @@
 A complete **eCommerce web application** built using the **MERN stack (MongoDB, Express, React + Redux, Node.js)**.  
 This project includes a secure backend API and frontend interface where users can browse products, add items to their cart, and complete purchases using PayPal or COD.
 
-**Visit Here:** [https://m-antoni-eshop-mern.vercel.app](https://m-antoni-eshop-mern.vercel.app)
+**Visit Here:** [https://m-antoni-eshop.vercel.app](https://m-antoni-eshop.vercel.app)
 <br/>
 **Live Demo:** [https://youtu.be/kP-tBwVRxI8](https://youtu.be/kP-tBwVRxI8)
 
