@@ -160,6 +160,45 @@ app.use((req, res, next) => {
   next();
 });
 
+
+// ======================================
+// ⚡ Health Check Endpoint for Cron Jobs
+// ======================================
+app.get("/api/health", async (req, res) => {
+  let dbStatus = "unknown";
+
+  try {
+    // Check MongoDB connection
+    if (mongoose.connection.readyState === 1) {
+      dbStatus = "connected";
+    } else if (mongoose.connection.readyState === 2) {
+      dbStatus = "connecting";
+    } else {
+      dbStatus = "disconnected";
+    }
+  } catch (err) {
+    dbStatus = "error";
+  }
+
+  res.status(200).json({
+    status: "ok",          // overall status
+    api_url: process.env.APP_URL,
+    host: "render.com",
+    timestamp: new Date(), // current server time
+    os:`${os.cpus().length} cores`,
+    uptime: process.uptime(), // server uptime in seconds
+    memory: {
+      rss: process.memoryUsage().rss,       // resident set size
+      heapTotal: process.memoryUsage().heapTotal,
+      heapUsed: process.memoryUsage().heapUsed,
+    },
+    db: dbStatus,
+    message: "Server is healthy",
+  });
+});
+
+
+
 // ====================================
 // 📦 API Routes
 // ====================================
@@ -173,7 +212,6 @@ app.use("/api/transaction", require("./routes/transaction.route"));
 // ====================================
 // ⚠️ Global Error Handler
 // ====================================
-
 app.use((err, req, res, next) => {
   console.error("🔥 Server Error:", err.message);
   res.status(500).json({
