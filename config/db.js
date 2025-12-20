@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+let _dbStatus = "disconnected";
+
 const connectDB = async () => {
   const MONGO_URI = process.env.MONGO_URI;
 
@@ -12,33 +14,18 @@ const connectDB = async () => {
   mongoose.set("strictQuery", true);
 
   try {
-    const conn = await mongoose.connect(MONGO_URI, {
-      // useNewUrlParser: true,
-      // useUnifiedTopology: true,
-    });
-
+    const conn = await mongoose.connect(MONGO_URI);
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
-    console.log(`📂 Database: ${conn.connection.name}`);
-    console.log(`🧩 State: ${mongoose.connection.readyState}`); // 1 = connected
+    _dbStatus = "MongoDB Connected";
   } catch (err) {
-    console.error("❌ MongoDB connection failed!");
-    console.error(`Error message: ${err.message}`);
-    if (err.reason) console.error(`Reason: ${err.reason}`);
+    console.error("❌ MongoDB connection failed!", err.message);
+    _dbStatus = "error";
     process.exit(1);
   }
 
-  // Optional: track live connection events
-  mongoose.connection.on("connected", () => {
-    console.log("🟢 Mongoose connected to DB");
-  });
-
-  mongoose.connection.on("error", (err) => {
-    console.error(`🔴 Mongoose connection error: ${err.message}`);
-  });
-
-  mongoose.connection.on("disconnected", () => {
-    console.warn("🟠 Mongoose disconnected");
-  });
+  mongoose.connection.on("connected", () => (_dbStatus = "MongoDB Connected"));
+  mongoose.connection.on("error", () => (_dbStatus = "error"));
+  mongoose.connection.on("disconnected", () => (_dbStatus = "disconnected"));
 
   process.on("SIGINT", async () => {
     await mongoose.connection.close();
@@ -47,4 +34,7 @@ const connectDB = async () => {
   });
 };
 
-module.exports = connectDB;
+// Export a getter function
+const getDBStatus = () => _dbStatus;
+
+module.exports = { connectDB, getDBStatus };

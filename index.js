@@ -5,7 +5,7 @@ const helmet = require("helmet");
 const xss = require("xss-clean");
 const cors = require("cors");
 const mongoSanitize = require("express-mongo-sanitize");
-const connectDB = require("./config/db");
+const { connectDB, getDBStatus } = require("./config/db");
 const os = require("os");
 const statusCodeColor = require("./helpers/statusCodeColor");
 const getMilliSeconds = require("./helpers/getMilliSeconds");
@@ -165,34 +165,16 @@ app.use((req, res, next) => {
 // ⚡ Health Check Endpoint for Cron Jobs
 // ======================================
 app.get("/api/health", async (req, res) => {
-  let dbStatus = "unknown";
-
-  try {
-    // Check MongoDB connection
-    if (mongoose.connection.readyState === 1) {
-      dbStatus = "connected";
-    } else if (mongoose.connection.readyState === 2) {
-      dbStatus = "connecting";
-    } else {
-      dbStatus = "disconnected";
-    }
-  } catch (err) {
-    dbStatus = "error";
-  }
-
+  
+  // JSON Response public route
   res.status(200).json({
-    status: "ok",          // overall status
-    api_url: process.env.APP_URL,
-    host: "render.com",
-    timestamp: new Date(), // current server time
-    os:`${os.cpus().length} cores`,
-    uptime: process.uptime(), // server uptime in seconds
-    memory: {
-      rss: process.memoryUsage().rss,       // resident set size
-      heapTotal: process.memoryUsage().heapTotal,
-      heapUsed: process.memoryUsage().heapUsed,
-    },
-    db: dbStatus,
+    statusCode: res.statusCode,
+    status: "ok",
+    db: getDBStatus(),  // always gets current value
+    timestamp: new Date(),
+    uptime: process.uptime(),
+    os: `${os.cpus().length} cores`,
+    memory: process.memoryUsage(),
     message: "Server is healthy",
   });
 });
@@ -224,7 +206,7 @@ app.use((err, req, res, next) => {
 // 🚀 Start Server
 // ====================================
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 const appURL = `${process.env.APP_URL}:${PORT}`;
 
 app.listen(PORT, () => {
