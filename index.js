@@ -12,7 +12,6 @@ const getMilliSeconds = require("./helpers/getMilliSeconds");
 const getMemory = require("./helpers/getMemory");
 const app = express();
 
-
 // ====================================
 // 🧩 Connect to MongoDB
 // ====================================
@@ -37,8 +36,9 @@ app.use(mongoSanitize());
 const allowedOrigins = [
   "http://localhost:3000",
   "http://127.0.0.1:3000",
-  /\.vercel\.app$/, // ✅ allow any Vercel subdomain
-  /\.onrender\.com$/, // ✅ (optional) allow your Render domain too
+  "http://13.215.185.19",
+  /\.vercel\.app$/, // allow any Vercel subdomain
+  /\.onrender\.com$/, // (optional) allow your Render domain too
 ];
 
 app.use(
@@ -75,7 +75,8 @@ app.options("*", cors());
 app.get("/", (req, res) => {
   const data = {
     app: "eshop - Simple E-commerce API (MERN Stack) + redux, tailwindcss and more.",
-    description: "Backend API handles Authentication, products, shipping, transaction and more.",
+    description:
+      "Backend API handles Authentication, products, shipping, transaction and more.",
     environment: process.env.NODE_ENV || "development",
     details: {
       node_version: process.version,
@@ -89,15 +90,16 @@ app.get("/", (req, res) => {
     },
     links: {
       linkedin: "https://www.linkedin.com/in/m-antoni",
-      github: "https://github.com/m-antoni/e-commerce-mern-api",
-      frontend: "https://m-antoni-eshop-mern.vercel.app",
+      github_api: "https://github.com/m-antoni/e-commerce-mern-api",
+      github_react: "https://github.com/m-antoni/e-commerce-react",
+      frontend: "https://m-antoni-eshop.vercel.app",
     },
     hosted: {
       database: "https://mongodb.com",
-      backend_api:"https://render.com",
-      frontend_ui:"https://vercel.com",
-      demo:"https://youtu.be/kP-tBwVRxI8"
-    }
+      backend_api: "https://render.com",
+      frontend_ui: "https://vercel.com",
+      demo: "https://youtu.be/kP-tBwVRxI8",
+    },
   };
 
   const html = `
@@ -130,7 +132,8 @@ app.get("/", (req, res) => {
           <tr><td>Backend API</td><td>Hosted on: <a href="${data.hosted.backend_api}" target="_blank">${data.hosted.backend_api}</a></tr>
           <tr><td>Frontend UI</td><td>Hosted on: <a href="${data.hosted.frontend_ui}" target="_blank">${data.hosted.frontend_ui}</a></tr>
           <tr><td>Linked In</td><td><a href="${data.links.linkedin}" target="_blank">${data.links.linkedin}</a></tr>
-          <tr><td>Github</td><td><a href="${data.links.github}" target="_blank">${data.links.github}</a></tr>
+          <tr><td>Github (Node)</td><td><a href="${data.links.github_api}" target="_blank">${data.links.github_api}</a></tr>
+          <tr><td>Github (React)</td><td><a href="${data.links.github_react}" target="_blank">${data.links.github_react}</a></tr>
           <tr><td>Visit Here</td><td><a href="${data.links.frontend}" target="_blank">${data.links.frontend}</a></tr>
           <tr><td>Demo Video</td><td><a href="${data.hosted.demo}" target="_blank">${data.hosted.demo}</a></tr>
         </table>
@@ -149,28 +152,28 @@ app.use((req, res, next) => {
   const startTime = Date.now();
 
   // do this after the response is finished
-  res.on('finish',() => {
-    const statusCode = statusCodeColor(res.statusCode)
-    const countMilliSeconds = getMilliSeconds(startTime)
+  res.on("finish", () => {
+    const statusCode = statusCodeColor(res.statusCode);
+    const countMilliSeconds = getMilliSeconds(startTime);
 
     // display custom logger in terminal
-    console.log(`🛢️ ${now.yellow} ${req.method} ${req.originalUrl} ${statusCode} ${countMilliSeconds}ms`);
+    console.log(
+      `🛢️ ${now.yellow} ${req.method} ${req.originalUrl} ${statusCode} ${countMilliSeconds}ms`
+    );
   });
 
   next();
 });
 
-
 // ======================================
 // ⚡ Health Check Endpoint for Cron Jobs
 // ======================================
 app.get("/api/health", async (req, res) => {
-  
   // JSON Response public route
   res.status(200).json({
     statusCode: res.statusCode,
     status: "ok",
-    db: getDBStatus(),  // always gets current value
+    db: getDBStatus(), // always gets current value
     timestamp: new Date(),
     uptime: process.uptime(),
     os: `${os.cpus().length} cores`,
@@ -178,8 +181,6 @@ app.get("/api/health", async (req, res) => {
     message: "Server is healthy",
   });
 });
-
-
 
 // ====================================
 // 📦 API Routes
