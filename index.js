@@ -34,11 +34,12 @@ app.use(mongoSanitize());
 
 // ===== CORS (universal) =====
 const allowedOrigins = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "http://13.215.185.19",
+  "http://localhost:3000", // local dev
+  "http://127.0.0.1:3000", // local dev alternate
+  "http://13.215.185.19", // specific IP (optional)
+  "https://e-commerce-react-bn17.onrender.com", // your deployed React frontend
   /\.vercel\.app$/, // allow any Vercel subdomain
-  /\.onrender\.com$/, // (optional) allow your Render domain too
+  /\.onrender\.com$/, // allow any Render subdomain (optional)
 ];
 
 app.use(

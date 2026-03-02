@@ -1,0 +1,22 @@
+# Node modules (you install inside container)
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Local environment files
+.env
+.env.local
+
+# Logs and temporary files
+*.log
+.DS_Store
+.vscode/
+.idea/
+
+# Git metadata (not needed in image)
+.git
+.gitignore
+
+# Build outputs (for React, optional)
+build
+dist

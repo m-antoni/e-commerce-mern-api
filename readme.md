@@ -3,13 +3,11 @@
 A complete **eCommerce web application** built using the **MERN stack (MongoDB, Express, React + Redux, Node.js)**.  
 This project includes a secure backend API and frontend interface where users can browse products, add items to their cart, and complete purchases using PayPal or COD.
 
-**Visit Here:** [https://m-antoni-eshop.vercel.app](https://m-antoni-eshop.vercel.app)
+**Visit Here:** [https://e-commerce-react-bn17.onrender.com](https://e-commerce-react-bn17.onrender.com)
 <br/>
 **Live Demo:** [https://youtu.be/kP-tBwVRxI8](https://youtu.be/kP-tBwVRxI8)
 
-
 ![App Screenshot](eshop.png)
-
 
 ---
 
@@ -28,8 +26,8 @@ This project includes a secure backend API and frontend interface where users ca
 | **Backend**        | Node.js, Express.js, Mongoose    |
 | **Database**       | MongoDB Atlas                    |
 | **Authentication** | JWT (JSON Web Token)             |
-| **Payments**       | PayPal Sandbox                   |
-| **Deployment**     | Render, Vercel                  |
+| **Payments**       | PayPal (Sandbox)                 |
+| **Deployment**     | Render, Docker                   |
 
 ## Setup Instructions
 
@@ -103,8 +101,7 @@ This project supports **PayPal Sandbox payments** for testing transactions in a 
 2. Under **Sandbox**, create a new app.
 3. Copy your **Client ID**.
 
-
-```
+````
 
 ### 3. Frontend Setup for PayPal
 
@@ -112,7 +109,7 @@ Include the PayPal SDK script in your checkout component or dynamically load it:
 
 ```html
 <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_SANDBOX_CLIENT_ID"></script>
-```
+````
 
 Or dynamically load it from your backend route:
 
@@ -227,7 +224,6 @@ APP_URL=https://e-commerce-mern-api.onrender.com
 REACT_APP_API_URL=https://e-commerce-mern-api.onrender.com/api
 REACT_APP_STORE_API=https://fakestoreapi.com/products
 ```
-
 
 ## Author
 
