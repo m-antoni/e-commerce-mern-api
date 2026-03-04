@@ -32,4 +32,4 @@ EXPOSE 8080
 # Define the default command to run when the container starts.
 # - Starts the Node.js server using 'npm start'.
 # - Ensure your app listens on process.env.PORT || 8080 for dynamic hosting platforms.
-CMD ["sh", "-c", "echo 'Starting Node server...' && node -e 'const PORT = process.env.PORT || 5000; console.log(`Server will run on port ${PORT}`); require(\"./index.js\")'"]
+CMD ["node", "index.js"]

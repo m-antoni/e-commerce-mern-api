@@ -3,7 +3,9 @@
 A complete **eCommerce web application** built using the **MERN stack (MongoDB, Express, React + Redux, Node.js)**.  
 This project includes a secure backend API and frontend interface where users can browse products, add items to their cart, and complete purchases using PayPal or COD.
 
-**Visit Here:** [https://e-commerce-react-bn17.onrender.com](https://e-commerce-react-bn17.onrender.com)
+The frontend and backend are packaged as separate `Docker` images and pushed to Docker Hub, allowing the application to be deployed on Render.com by simply pulling the respective images.
+
+**Visit Here:** [https://eshop-mern-frontend.onrender.com/](https://eshop-mern-frontend.onrender.com/)
 <br/>
 **Live Demo:** [https://youtu.be/kP-tBwVRxI8](https://youtu.be/kP-tBwVRxI8)
 
@@ -190,20 +192,14 @@ REACT_APP_STORE_API=https://fakestoreapi.com/products
 - Redux manages both user authentication and cart state.
 - The backend uses Mongoose v5 (compatible with Node v18+).
 - Use `npm run dev` for hot-reload in the API and `npm start` for the UI.
+- Docker images allow consistent deployment across environments.
 
 ---
 
 ## Deployment
 
-### Backend
-
-Deployed via **Render**.
-Environment variables must be configured in the Render Dashboard under _Environment_.
-
-### Frontend
-
-Deployed via **Vercel** (or Netlify).
-Ensure `REACT_APP_API_URL` points to your deployed backend URL.
+Both the frontend and backend are deployed as separate Docker images on Render.com.
+The frontend is built using build arguments for API URLs, so no additional environment configuration is needed.Both the frontend and backend are deployed as separate Docker images on `render.com`
 
 ---
 

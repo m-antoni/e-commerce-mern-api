@@ -38,6 +38,7 @@ const allowedOrigins = [
   "http://127.0.0.1:3000", // local dev alternate
   "http://13.215.185.19", // specific IP (optional)
   "https://e-commerce-react-bn17.onrender.com", // your deployed React frontend
+  `${process.env.APP_URL}`,
   /\.vercel\.app$/, // allow any Vercel subdomain
   /\.onrender\.com$/, // allow any Render subdomain (optional)
 ];
@@ -208,7 +209,7 @@ app.use((err, req, res, next) => {
 // 🚀 Start Server
 // ====================================
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 const appURL = `${process.env.APP_URL}:${PORT}`;
 
 app.listen(PORT, () => {

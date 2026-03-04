@@ -18,5 +18,4 @@ yarn-error.log
 .gitignore
 
 # Build outputs (for React, optional)
-build
 dist
