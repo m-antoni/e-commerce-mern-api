@@ -3,7 +3,7 @@
 A complete **eCommerce web application** built using the **MERN stack (MongoDB, Express, React + Redux, Node.js)**.  
 This project includes a secure backend API and frontend interface where users can browse products, add items to their cart, and complete purchases using PayPal or COD.
 
-The frontend and backend are packaged as separate `Docker` images and pushed to Docker Hub, allowing the application to be deployed on Render.com by simply pulling the respective images.
+The frontend and backend are packaged as separate Docker images and pushed to Docker Hub, allowing the application to be deployed on Render.com by simply pulling the respective images.
 
 **Visit Here:** [https://eshop-mern-frontend.onrender.com/](https://eshop-mern-frontend.onrender.com/)
 <br/>
