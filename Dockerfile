@@ -8,6 +8,10 @@ FROM node:20-alpine
 # - Keeps container filesystem organized and predictable.
 WORKDIR /app
 
+# Set environment
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
+
 # Copy package.json and package-lock.json (if present) to the container.
 # - Only copying these files first allows Docker to cache npm install.
 RUN echo "Copying package.json and installing production dependencies..."
@@ -28,6 +32,11 @@ RUN echo "Source code copied successfully."
 # Inform Docker that the container will listen on port 8080 at runtime.
 # - Note: This does not publish the port externally; it’s documentation and can be used by orchestration tools.
 EXPOSE 8080
+
+# Labels for metadata
+LABEL maintainer="Michael Antoni michaelantoni.tech@gmail.com"
+LABEL version="1.0.0"
+LABEL description="e-shop MERN Stack Project"
 
 # Define the default command to run when the container starts.
 # - Starts the Node.js server using 'npm start'.

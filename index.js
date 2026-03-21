@@ -13,14 +13,13 @@ const getMemory = require("./helpers/getMemory");
 const app = express();
 
 // ====================================
-// 🧩 Connect to MongoDB
+// Connect to MongoDB
 // ====================================
 connectDB();
 
 // ====================================
-// 🛡️ Security & Middleware
+// Security & Middleware
 // ====================================
-
 // Secure HTTP headers
 app.use(helmet());
 
@@ -32,48 +31,46 @@ app.use(express.urlencoded({ extended: true }));
 app.use(xss());
 app.use(mongoSanitize());
 
-// ===== CORS (universal) =====
+// ====================================
+// CORS (Important for production deployment)
+// ====================================
 const allowedOrigins = [
-  "http://localhost:3000", // local dev
-  "http://127.0.0.1:3000", // local dev alternate
-  "http://13.215.185.19", // specific IP (optional)
-  "https://e-commerce-react-bn17.onrender.com", // your deployed React frontend
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
   `${process.env.APP_URL}`,
-  /\.vercel\.app$/, // allow any Vercel subdomain
-  /\.onrender\.com$/, // allow any Render subdomain (optional)
+  /\.vercel\.app$/, // allow Vercel domains
+  /\.onrender\.com$/, // allow Render domains
+  /\.run\.app$/, // allow Cloud Run domains
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, curl, etc.)
-      if (!origin) return callback(null, true);
+// CORS options
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow curl / Postman
 
-      const isAllowed = allowedOrigins.some((pattern) =>
-        pattern instanceof RegExp ? pattern.test(origin) : pattern === origin
-      );
+    const isAllowed = allowedOrigins.some((pattern) =>
+      pattern instanceof RegExp ? pattern.test(origin) : pattern === origin
+    );
 
-      if (!isAllowed) {
-        console.warn(`🚫 Blocked by CORS: ${origin}`);
-        return callback(new Error("Not allowed by CORS"), false);
-      }
+    if (!isAllowed) {
+      console.warn(`🚫 Blocked by CORS: ${origin}`);
+      return callback(new Error("Not allowed by CORS"), false);
+    }
 
-      return callback(null, true);
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "x-auth-token"],
-    optionsSuccessStatus: 204,
-  })
-);
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-auth-token"],
+  optionsSuccessStatus: 204,
+};
 
-// Must be before routes
-app.options("*", cors());
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // ====================================
-// 🧭 Root Route
+// Root Route
 // ====================================
-
 app.get("/", (req, res) => {
   const data = {
     app: "eshop - Simple E-commerce API (MERN Stack) + redux, tailwindcss and more.",
@@ -91,15 +88,11 @@ app.get("/", (req, res) => {
       },
     },
     links: {
-      linkedin: "https://www.linkedin.com/in/m-antoni",
       github_api: "https://github.com/m-antoni/e-commerce-mern-api",
       github_react: "https://github.com/m-antoni/e-commerce-react",
-      frontend: "https://m-antoni-eshop.vercel.app",
-    },
-    hosted: {
       database: "https://mongodb.com",
-      backend_api: "https://render.com",
-      frontend_ui: "https://vercel.com",
+      dockerhub:
+        "https://hub.docker.com/repository/docker/michael0221/eshop-mern-backend",
       demo: "https://youtu.be/kP-tBwVRxI8",
     },
   };
@@ -130,14 +123,11 @@ app.get("/", (req, res) => {
           <tr><td>Platform</td><td>${data.details.platform}</td></tr>
           <tr><td>CPU</td><td>${data.details.cpu}</td></tr>
           <tr><td>Memory</td><td>Free = ${data.details.memory.free}  Total = ${data.details.memory.total}</td></tr>
-          <tr><td>Database</td><td>MongoDB Atlas Cloud: <a href="${data.hosted.database}" target="_blank">${data.hosted.database}</a></tr>
-          <tr><td>Backend API</td><td>Hosted on: <a href="${data.hosted.backend_api}" target="_blank">${data.hosted.backend_api}</a></tr>
-          <tr><td>Frontend UI</td><td>Hosted on: <a href="${data.hosted.frontend_ui}" target="_blank">${data.hosted.frontend_ui}</a></tr>
-          <tr><td>Linked In</td><td><a href="${data.links.linkedin}" target="_blank">${data.links.linkedin}</a></tr>
+          <tr><td>Database</td><td>MongoDB Atlas Cloud: <a href="${data.links.database}" target="_blank">${data.links.database}</a></tr>
           <tr><td>Github (Node)</td><td><a href="${data.links.github_api}" target="_blank">${data.links.github_api}</a></tr>
           <tr><td>Github (React)</td><td><a href="${data.links.github_react}" target="_blank">${data.links.github_react}</a></tr>
-          <tr><td>Visit Here</td><td><a href="${data.links.frontend}" target="_blank">${data.links.frontend}</a></tr>
-          <tr><td>Demo Video</td><td><a href="${data.hosted.demo}" target="_blank">${data.hosted.demo}</a></tr>
+          <tr><td>Docker Hub (IMAGE)</td><td><a href="${data.links.dockerhub}" target="_blank">${data.links.dockerhub}</a></tr>
+          <tr><td>Demo Video</td><td><a href="${data.links.demo}" target="_blank">${data.links.demo}</a></tr>
         </table>
       </body>
     </html>
@@ -147,7 +137,7 @@ app.get("/", (req, res) => {
 });
 
 // ====================================
-// 🤖 API Routes Terminal Logger
+// API Routes Terminal Logger
 // ===================================
 app.use((req, res, next) => {
   const now = new Date().toISOString();
@@ -168,7 +158,7 @@ app.use((req, res, next) => {
 });
 
 // ======================================
-// ⚡ Health Check Endpoint for Cron Jobs
+// Health Check Endpoint for Cron Jobs
 // ======================================
 app.get("/api/health", async (req, res) => {
   // JSON Response public route
@@ -185,9 +175,8 @@ app.get("/api/health", async (req, res) => {
 });
 
 // ====================================
-// 📦 API Routes
+// API Routes
 // ====================================
-
 app.use("/api/fakestore", require("./routes/fakestore.route"));
 app.use("/api/auth", require("./routes/auth.route"));
 app.use("/api/carts", require("./routes/cart.route"));
@@ -195,7 +184,7 @@ app.use("/api/shipping", require("./routes/shipping.route"));
 app.use("/api/transaction", require("./routes/transaction.route"));
 
 // ====================================
-// ⚠️ Global Error Handler
+// Global Error Handler
 // ====================================
 app.use((err, req, res, next) => {
   console.error("🔥 Server Error:", err.message);
@@ -206,9 +195,8 @@ app.use((err, req, res, next) => {
 });
 
 // ====================================
-// 🚀 Start Server
+// Start Server
 // ====================================
-
 const PORT = process.env.PORT || 5000;
 const appURL = `${process.env.APP_URL}:${PORT}`;
 

@@ -5,164 +5,40 @@ This project includes a secure backend API and frontend interface where users ca
 
 The frontend and backend are packaged as separate Docker images and pushed to Docker Hub, allowing the application to be deployed on Render.com by simply pulling the respective images.
 
-**Visit Here:** [https://eshop-mern-frontend.onrender.com/](https://eshop-mern-frontend.onrender.com/)
+**Visit Here:** [https://eshop-mern-frontend-979607262100.asia-southeast1.run.app](https://eshop-mern-frontend-979607262100.asia-southeast1.run.app)
 <br/>
 **Live Demo:** [https://youtu.be/kP-tBwVRxI8](https://youtu.be/kP-tBwVRxI8)
 
-![App Screenshot](eshop.png)
+<br/>
 
----
+![App Screenshot](./docs/image02.png)
 
 ## Repositories
 
-- **Backend (API):** [https://github.com/m-antoni/e-commerce-mern-api](https://github.com/m-antoni/e-commerce-mern-api)
-- **Frontend (React UI):** [https://github.com/m-antoni/e-commerce-react](https://github.com/m-antoni/e-commerce-react)
+- **Backend:** [https://github.com/m-antoni/e-commerce-mern-api](https://github.com/m-antoni/e-commerce-mern-api)
+- **Frontend:** [https://github.com/m-antoni/e-commerce-react](https://github.com/m-antoni/e-commerce-react)
+- **Docker Hub (Images)**
+  - **Backend Image:** [https://hub.docker.com/repository/docker/michael0221/eshop-mern-backend/general](https://hub.docker.com/repository/docker/michael0221/eshop-mern-backend/general)
+  - **Frontend Image:** [https://hub.docker.com/repository/docker/michael0221/eshop-mern-frontend](https://hub.docker.com/repository/docker/michael0221/eshop-mern-frontend)
+  - Note: These are Docker images, which are the blueprints used to create running containers.
 
 ---
 
-## Tech Stack
+## Technologies:
 
-| Layer              | Technology                       |
-| :----------------- | :------------------------------- |
-| **Frontend**       | React, Redux, TailwindCSS, Axios |
-| **Backend**        | Node.js, Express.js, Mongoose    |
-| **Database**       | MongoDB Atlas                    |
-| **Authentication** | JWT (JSON Web Token)             |
-| **Payments**       | PayPal (Sandbox)                 |
-| **Deployment**     | Render, Docker                   |
-
-## Setup Instructions
-
-### 1. Clone the Repositories
-
-```bash
-# Backend
-git clone https://github.com/m-antoni/e-commerce-mern-api.git
-cd e-commerce-mern-api
-
-# Frontend
-git clone https://github.com/m-antoni/e-commerce-react.git
-cd e-commerce-react
-```
+| Layer                  | Technology                                                                    |
+| :--------------------- | :---------------------------------------------------------------------------- |
+| **Frontend**           | React, Redux, TailwindCSS, sweetalert2, izitoast, react-responsive-modal, ... |
+| **Backend**            | Node.js, Express.js, Mongoose, joi, xss-clean, express-mongo-sanitize, ...    |
+| **Database**           | MongoDB Atlas                                                                 |
+| **Authentication**     | JWT (JSON Web Token), bcryptjs                                                |
+| **Payments**           | PayPal (Sandbox)                                                              |
+| **Image/Containerize** | Docker, Docker Hub                                                            |
+| **Deployment**         | Google Cloud Run or Render.com                                                |
 
 ---
 
-## Backend Setup (API)
-
-### 1. Install Dependencies
-
-```bash
-npm install
-```
-
-### 2. Create a `.env` file
-
-```bash
-MONGO_URI=mongodb+srv://<username>:<password>@cluster-url/eshop_db?retryWrites=true&w=majority
-JWT_SECRET=your_secret_key
-JWT_EXPIRES_IN=3d
-APP_URL=http://localhost:5000
-```
-
-### 3. Run the Server
-
-```bash
-npm run dev
-```
-
-### 4. Logs Example
-
-```
-===================================
-Server is running successfully!
-URL: http://localhost:5000
-Environment: development
-MongoDB Connected: cluster0.mongodb.net
-Database: eshop_db
-===================================
-```
-
----
-
-## PayPal Sandbox Integration
-
-This project supports **PayPal Sandbox payments** for testing transactions in a safe, development environment.
-
-### 1. Create a PayPal Developer Account
-
-1. Go to [https://developer.paypal.com/](https://developer.paypal.com/).
-2. Log in using your PayPal credentials or sign up.
-3. Navigate to **Dashboard → Sandbox → Accounts**.
-4. Create:
-   - One **Business (Merchant)** account for receiving payments.
-   - One **Personal (Buyer)** account for testing purchases.
-
-### 2. Get Your PayPal Sandbox Client ID
-
-1. Go to **My Apps & Credentials** in the Developer Dashboard.
-2. Under **Sandbox**, create a new app.
-3. Copy your **Client ID**.
-
-````
-
-### 3. Frontend Setup for PayPal
-
-Include the PayPal SDK script in your checkout component or dynamically load it:
-
-```html
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_SANDBOX_CLIENT_ID"></script>
-````
-
-Or dynamically load it from your backend route:
-
-```js
-// Example API endpoint in backend
-app.get("/api/config/paypal", (req, res) => {
-  res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
-});
-```
-
-Then fetch it in React:
-
-```js
-const {
-  data: { clientId },
-} = await axios.get("/api/config/paypal");
-```
-
-### 4. Testing the Payment
-
-Use the sandbox **Buyer** account credentials during checkout to simulate real PayPal payments.  
-You can view all test transactions in your [PayPal Developer Dashboard → Sandbox → Accounts → View Transactions](https://developer.paypal.com/dashboard/accounts).
-
----
-
-## Frontend Setup (React UI)
-
-### 1. Install Dependencies
-
-```bash
-npm install
-```
-
-### 2. Start the App
-
-```bash
-npm start
-```
-
-### 3. Environment Variables (optional)
-
-If your frontend needs API connection:
-
-```bash
-REACT_APP_API_URL=http://localhost:5000/api
-REACT_APP_STORE_API=https://fakestoreapi.com/products
-```
-
----
-
-## Features
+## Features:
 
 ### Authentication
 
@@ -186,6 +62,190 @@ REACT_APP_STORE_API=https://fakestoreapi.com/products
 
 ---
 
+## Setup Instructions
+
+**Clone the Repositories**
+
+```bash
+# Backend
+git clone https://github.com/m-antoni/e-commerce-mern-api.git
+cd e-commerce-mern-api
+
+# Frontend
+git clone https://github.com/m-antoni/e-commerce-react.git
+cd e-commerce-react
+```
+
+---
+
+### Setup Backend (API)
+
+**Install Dependencies**
+
+```bash
+npm install
+```
+
+**Create a `.env` file**
+
+```bash
+MONGO_URI=mongodb+srv://<username>:<password>@cluster-url/eshop_db?retryWrites=true&w=majority
+JWT_SECRET=your_secret_key
+JWT_EXPIRES_IN=3d
+APP_URL=http://localhost:5000
+```
+
+**Run the Server**
+
+```bash
+npm run dev
+```
+
+**Logs Example**
+
+```
+===================================
+Server is running successfully!
+URL: http://localhost:5000
+Environment: development
+MongoDB Connected: cluster0.mongodb.net
+Database: eshop_db
+===================================
+```
+
+---
+
+### PayPal Sandbox Integration
+
+This project supports **PayPal Sandbox payments** for testing transactions in a safe, development environment.
+
+**Create a PayPal Developer Account**
+
+1. Go to [https://developer.paypal.com/](https://developer.paypal.com/).
+2. Log in using your PayPal credentials or sign up.
+3. Navigate to **Dashboard → Sandbox → Accounts**.
+4. Create:
+   - One **Business (Merchant)** account for receiving payments.
+   - One **Personal (Buyer)** account for testing purchases.
+
+**Get Your PayPal Sandbox Client ID**
+
+1. Go to **My Apps & Credentials** in the Developer Dashboard.
+2. Under **Sandbox**, create a new app.
+3. Copy your **Client ID**.
+
+**Frontend Setup for PayPal**
+
+Include the PayPal SDK script in your checkout component or dynamically load it:
+
+```
+<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_SANDBOX_CLIENT_ID"></script>
+```
+
+Or dynamically load it from your backend route:
+
+```js
+// Example API endpoint in backend
+app.get("/api/config/paypal", (req, res) => {
+  res.send({ clientId: process.env.PAYPAL_CLIENT_ID });
+});
+```
+
+Then fetch it in React:
+
+```js
+const {
+  data: { clientId },
+} = await axios.get("/api/config/paypal");
+```
+
+**Testing the Payment:**
+
+Use the sandbox **Buyer** account credentials during checkout to simulate real PayPal payments.  
+You can view all test transactions in your [PayPal Developer Dashboard → Sandbox → Accounts → View Transactions](https://developer.paypal.com/dashboard/accounts).
+
+---
+
+### Setup Frontend (React + TailwindCSS)
+
+**Environment Variables**
+
+Go to `src/config/env.config.json`
+
+```bash
+{
+  "API_URL": {
+    "development": "http://localhost:5000/api",
+    "production": "https://<your-production-url>/api"
+  },
+  "FAKE_STORE_API": "https://fakestoreapi.com/products"
+}
+```
+
+**Install Dependencies**
+
+```bash
+npm install
+```
+
+**Start the App**
+
+```bash
+npm start
+```
+
+## Docker Compose
+
+- To run the project with Docker Compose, create a file named `docker-compose.yml` in the root directory, alongside the **./frontend** and **./backend** folders.
+
+```
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: mern-backend-dev
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm run dev
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: mern-frontend-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm start
+
+```
+
+**Docker Compose commands**
+
+```
+# Start the frontend and backend containers in detached mode (build if needed)
+docker-compose up -d
+
+# Stop the running containers
+docker-compose stop
+
+# Remove the containers and networks
+docker-compose down
+
+# (Optional) Remove anonymous volumes as well
+docker-compose down -v
+```
+
 ## Developer Notes
 
 - React Router v5 is used for navigation.
@@ -198,28 +258,10 @@ REACT_APP_STORE_API=https://fakestoreapi.com/products
 
 ## Deployment
 
-Both the frontend and backend are deployed as separate Docker images on Render.com.
-The frontend is built using build arguments for API URLs, so no additional environment configuration is needed.Both the frontend and backend are deployed as separate Docker images on `render.com`
+Both the frontend and backend are deployed as separate Docker images from my Docker Hub.
+Each image is deployed independently on `Google Cloud Run`, allowing the frontend and backend to scale and update separately.
 
 ---
-
-## Example .env Files
-
-### Backend (.env)
-
-```bash
-MONGO_URI=mongodb+srv://<user>:<password>@cluster-url/eshop_db
-JWT_SECRET=693C9C2BE126AC9457CA1393F9C3E
-JWT_EXPIRES_IN=3d
-APP_URL=https://e-commerce-mern-api.onrender.com
-```
-
-### Frontend (.env)
-
-```bash
-REACT_APP_API_URL=https://e-commerce-mern-api.onrender.com/api
-REACT_APP_STORE_API=https://fakestoreapi.com/products
-```
 
 ## Author
 
