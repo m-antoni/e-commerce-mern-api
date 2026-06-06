@@ -17,10 +17,6 @@ The frontend and backend are packaged as separate Docker images and pushed to Do
 
 - **Backend:** [https://github.com/m-antoni/e-commerce-mern-api](https://github.com/m-antoni/e-commerce-mern-api)
 - **Frontend:** [https://github.com/m-antoni/e-commerce-react](https://github.com/m-antoni/e-commerce-react)
-- **Docker Hub (Images)**
-  - **Backend Image:** [https://hub.docker.com/repository/docker/michael0221/eshop-mern-backend/general](https://hub.docker.com/repository/docker/michael0221/eshop-mern-backend/general)
-  - **Frontend Image:** [https://hub.docker.com/repository/docker/michael0221/eshop-mern-frontend](https://hub.docker.com/repository/docker/michael0221/eshop-mern-frontend)
-  - Note: These are Docker images, which are the blueprints used to create running containers.
 
 ---
 
