@@ -31,7 +31,7 @@ echo "***********************************"
 echo "Starting application..."
 echo "***********************************"
 
-docker compose up -d
+docker compose up -d --remove-orphans
 
 echo "***********************************"
 echo "Deployment complete!"

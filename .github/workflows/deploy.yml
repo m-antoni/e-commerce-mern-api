@@ -30,7 +30,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/eshop-backend:ec2
 
-      - name: Create Backend .env on EC2
+      - name: Create .env on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -45,7 +45,7 @@ jobs:
             APP_URL=${{ secrets.APP_URL }}
             EOF
 
-      - name: Deploy Backend via deploy.sh
+      - name: Deploy Backend
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -53,5 +53,6 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/deploy
-            chmod +x deploy.sh
-            ./deploy.sh
+            docker compose pull backend
+            docker compose up -d backend
+            docker image prune -f
