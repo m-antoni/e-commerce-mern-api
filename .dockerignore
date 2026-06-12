@@ -1,21 +1,37 @@
-# Node modules (you install inside container)
+# =========================
+# Dependencies (NEVER include in image build context)
+# =========================
 node_modules
 npm-debug.log
 yarn-error.log
 
-# Local environment files
+# =========================
+# Environment files (CRITICAL - security)
+# =========================
 .env
-.env.local
+.env.*
+!.env.example
 
-# Logs and temporary files
+# =========================
+# Logs
+# =========================
 *.log
+
+# =========================
+# OS / Editor files
+# =========================
 .DS_Store
 .vscode/
 .idea/
 
+# =========================
 # Git metadata (not needed in image)
+# =========================
 .git
 .gitignore
 
-# Build outputs (for React, optional)
+# =========================
+# Build outputs (avoid copying stale builds)
+# =========================
+build
 dist
