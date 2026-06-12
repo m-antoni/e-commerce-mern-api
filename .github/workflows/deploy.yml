@@ -1,4 +1,4 @@
-name: Deploy MERN Stack to AWS EC2
+name: Deploy Backend to EC2
 
 on:
   push:
@@ -6,12 +6,11 @@ on:
       - deploy/ec2
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    environment: production
 
     steps:
-      - name: Checkout Source code
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
@@ -26,55 +25,31 @@ jobs:
       - name: Build and Push Backend Image
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
+          context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/eshop-mern-backend:ec2
+          tags: ${{ secrets.DOCKER_USERNAME }}/eshop-backend:ec2
 
-      - name: Build and Push Frontend Image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./frontend
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/eshop-mern-frontend:ec2
-
-      - name: Create Deploy Directory on EC2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: mkdir -p ~/deploy
-
-      - name: Copy Deployment Files to EC2
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "deploy/*"
-          target: "/home/ubuntu/deploy/"
-          strip_components: 1
-
-      - name: Create .env file on EC2
+      - name: Create Backend .env on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cat <<EOF > ~/deploy/.env
+            cat <<EOF > ~/deploy/backend/.env
             MONGO_URI=${{ secrets.MONGO_URI }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}
             APP_URL=${{ secrets.APP_URL }}
             EOF
 
-      - name: Deploy on EC2 via SSH
+      - name: Deploy Backend via deploy.sh
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/deploy
-            sh deploy.sh
+            cd ~/deploy/backend
+            chmod +x deploy.sh
+            ./deploy.sh
