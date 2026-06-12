@@ -2,16 +2,14 @@ version: "3.8"
 
 services:
   backend:
-    image: michael0221/eshop-mern-backend:ec2
+    image: michael0221/eshop-backend:ec2
     container_name: mern-backend
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       NODE_ENV: production
       PORT: 5000
-      MONGO_URI: ${MONGO_URI}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN}
-      APP_URL: ${APP_URL}
     networks:
       - mern-network
 

@@ -37,8 +37,8 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            mkdir -p ~/deploy/backend
-            cat <<EOF > ~/deploy/backend/.env
+            mkdir -p ~/deploy
+            cat <<EOF > ~/deploy/.env
             MONGO_URI=${{ secrets.MONGO_URI }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
             JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}
@@ -52,6 +52,6 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/deploy/backend
+            cd ~/deploy
             chmod +x deploy.sh
             ./deploy.sh
