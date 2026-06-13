@@ -8,11 +8,14 @@ echo "***********************************"
 
 cd ~/deploy/backend || exit 1
 
+echo "Removing old backend container..."
+docker rm -f mern-backend 2>/dev/null || true
+
 echo "Pulling backend image..."
-docker compose pull backend
+docker compose --project-name mern pull backend
 
 echo "Starting backend..."
-docker compose up -d backend
+docker compose --project-name mern up -d backend
 
 echo "Saving backend logs..."
 LOGDIR=~/deploy/backend/logs
