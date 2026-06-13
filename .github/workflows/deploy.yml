@@ -30,7 +30,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/eshop-backend:ec2
 
-      - name: Create .env on EC2
+      - name: Create .env and docker-compose.yml on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -38,6 +38,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             mkdir -p ~/deploy
+
             cat <<EOF > ~/deploy/.env
             MONGO_URI=${{ secrets.MONGO_URI }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
@@ -45,23 +46,61 @@ jobs:
             APP_URL=${{ secrets.APP_URL }}
             EOF
 
-      - name: Upload docker-compose.yml to EC2
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "docker-compose.yml"
-          target: "~/deploy/"
+            cat <<'COMPOSE_EOF' > ~/deploy/docker-compose.yml
+            services:
+              backend:
+                image: michael0221/eshop-backend:ec2
+                container_name: mern-backend
+                restart: unless-stopped
+                env_file:
+                  - .env
+                environment:
+                  NODE_ENV: production
+                  PORT: 5000
+                networks:
+                  - mern-network
 
-      - name: Upload deploy script to EC2
-        uses: appleboy/scp-action@v0.1.7
+              frontend:
+                image: michael0221/eshop-mern-frontend:ec2
+                container_name: mern-frontend
+                restart: unless-stopped
+                ports:
+                  - "3000:80"
+                depends_on:
+                  - backend
+                networks:
+                  - mern-network
+
+            networks:
+              mern-network:
+                driver: bridge
+            COMPOSE_EOF
+
+      - name: Create deploy script on EC2
+        uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "deploy-backend.sh"
-          target: "~/deploy/"
+          script: |
+            cat <<'SCRIPT_EOF' > ~/deploy/deploy-backend.sh
+            #!/bin/bash
+            set -e
+            echo "***********************************"
+            echo "Deploying BACKEND"
+            echo "***********************************"
+            cd ~/deploy || exit 1
+            echo "Pulling backend image..."
+            docker compose pull backend
+            echo "Starting backend..."
+            docker compose up -d backend
+            echo "Pruning unused images..."
+            docker image prune -f
+            echo "***********************************"
+            echo "Backend deployment complete"
+            echo "***********************************"
+            SCRIPT_EOF
+            chmod +x ~/deploy/deploy-backend.sh
 
       - name: Deploy Backend via Script
         uses: appleboy/ssh-action@v1.0.3
