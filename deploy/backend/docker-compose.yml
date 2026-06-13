@@ -37,6 +37,39 @@ services:
     networks:
       - mern-network
 
+  loki:
+    image: grafana/loki:3.0.0
+    container_name: loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    networks:
+      - mern-network
+
+  promtail:
+    image: grafana/promtail:3.0.0
+    container_name: promtail
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ~/deploy/backend/promtail-config.yml:/etc/promtail/config.yml
+    networks:
+      - mern-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SERVER_ROOT_URL: http://18.142.177.28/grafana
+      GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+    volumes:
+      - ~/deploy/grafana/data:/var/lib/grafana
+    networks:
+      - mern-network
+
 networks:
   mern-network:
     driver: bridge
