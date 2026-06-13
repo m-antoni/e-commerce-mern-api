@@ -16,6 +16,7 @@ docker compose --project-name mern pull backend
 
 echo "Starting backend..."
 docker compose --project-name mern up -d backend
+docker compose --project-name mern up -d dozzle
 
 echo "Saving backend logs..."
 LOGDIR=~/deploy/backend/logs
