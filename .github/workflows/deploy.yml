@@ -45,6 +45,16 @@ jobs:
             APP_URL=${{ secrets.APP_URL }}
             EOF
 
+      - name: Upload backend files to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "deploy/backend/"
+          target: "~/deploy/"
+          strip_components: 1
+
       - name: Deploy Backend on EC2
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -52,6 +62,7 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            mkdir -p ~/deploy/backend/logs
             cd ~/deploy/backend
             chmod +x deploy-backend.sh
             ./deploy-backend.sh
