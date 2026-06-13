@@ -30,6 +30,8 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
+    environment:
+      DOZZLE_BASE: /logs
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
