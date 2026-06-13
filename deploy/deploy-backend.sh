@@ -14,6 +14,11 @@ docker compose pull backend
 echo "Starting backend..."
 docker compose up -d backend
 
+echo "Saving backend logs..."
+LOGDIR=~/deploy/backend/logs
+mkdir -p "$LOGDIR"
+docker logs mern-backend > "$LOGDIR/backend_$(date +%Y%m%d_%H%M%S).log" 2>&1
+
 echo "Pruning unused images..."
 docker image prune -f
 

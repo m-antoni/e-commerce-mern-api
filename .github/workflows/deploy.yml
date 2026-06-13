@@ -52,6 +52,6 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd ~/deploy
+            cd ~/deploy/backend
             chmod +x deploy-backend.sh
             ./deploy-backend.sh
