@@ -51,9 +51,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: "deploy/docker-compose.yml"
+          source: "docker-compose.yml"
           target: "~/deploy/"
-          strip_components: 1
 
       - name: Upload deploy script to EC2
         uses: appleboy/scp-action@v0.1.7
