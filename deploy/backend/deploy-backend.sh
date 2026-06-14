@@ -17,12 +17,8 @@ docker compose --project-name mern pull backend
 echo "Starting backend..."
 docker compose --project-name mern up -d backend
 
-echo "Preparing Grafana data directory..."
-mkdir -p ~/deploy/grafana/data
-sudo chown -R 472:472 ~/deploy/grafana/data
-
 echo "Starting support services..."
-docker compose --project-name mern up -d dozzle loki promtail grafana
+docker compose --project-name mern up -d dozzle
 
 echo "Saving backend logs..."
 LOGDIR=~/deploy/backend/logs
