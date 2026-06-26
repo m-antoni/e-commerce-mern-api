@@ -5,7 +5,7 @@ This project includes a secure backend API and frontend interface where users ca
 
 The frontend and backend are packaged as separate Docker images and pushed to Docker Hub, allowing the application to be deployed on Render.com by simply pulling the respective images.
 
-**Visit Here:** [https://eshop-mern-frontend-979607262100.asia-southeast1.run.app](https://eshop-mern-frontend-979607262100.asia-southeast1.run.app)
+**Visit Here:** [https://eshop-mern-frontend-render.onrender.com/login](https://eshop-mern-frontend-render.onrender.com/login)
 <br/>
 **Live Demo:** [https://youtu.be/kP-tBwVRxI8](https://youtu.be/kP-tBwVRxI8)
 
@@ -30,6 +30,7 @@ The frontend and backend are packaged as separate Docker images and pushed to Do
 | **Authentication**     | JWT (JSON Web Token), bcryptjs                                                |
 | **Payments**           | PayPal (Sandbox)                                                              |
 | **Image/Containerize** | Docker, Docker Hub                                                            |
+| **CI/CD**              | GitHub Actions                                                                |
 | **Deployment**         | Google Cloud Run or Render.com                                                |
 
 ---
