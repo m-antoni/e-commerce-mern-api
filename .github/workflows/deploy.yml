@@ -1,14 +1,14 @@
-name: Deploy Backend to EC2
+name: Deploy Backend to Render.com
 
 on:
   push:
     branches:
-      - deploy/ec2
+      - deploy/render
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: production-render
 
     steps:
       - name: Checkout Source Code
@@ -28,41 +28,11 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/eshop-backend:ec2
+          tags: ${{ secrets.DOCKER_USERNAME }}/eshop-backend:render
+          build-args: |
+            NODE_ENV=production
 
-      - name: Create .env on EC2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            mkdir -p ~/deploy
-            cat <<EOF > ~/deploy/.env
-            MONGO_URI=${{ secrets.MONGO_URI }}
-            JWT_SECRET=${{ secrets.JWT_SECRET }}
-            JWT_EXPIRES_IN=${{ secrets.JWT_EXPIRES_IN }}
-            APP_URL=${{ secrets.APP_URL }}
-            EOF
-
-      - name: Upload backend files to EC2
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          source: "deploy/backend/"
-          target: "~/deploy/"
-          strip_components: 1
-
-      - name: Deploy Backend on EC2
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_KEY }}
-          script: |
-            mkdir -p ~/deploy/backend/logs
-            cd ~/deploy/backend
-            chmod +x deploy-backend.sh
-            ./deploy-backend.sh
+      - name: Trigger Render Deploy
+        env:
+          deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: curl --fail "$deploy_url"
